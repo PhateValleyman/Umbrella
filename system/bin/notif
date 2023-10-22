@@ -1,0 +1,49 @@
+#!/system/bin/sh
+# Initial Clear
+clear;
+##################################################
+##################### COLORS #####################
+G='\e[01;32m'           # GREEN TEXT                                   
+R='\e[01;31m'           # RED TEXT
+Y='\e[01;33m'           # YELLOW TEXT                                  
+B='\e[01;34m'           # BLUE TEXT
+V='\e[01;35m'           # VIOLET TEXT
+Bl='\e[01;30m'       # BLACK TEXT
+C='\e[01;36m'           # CYAN TEXT
+W='\e[01;37m'           # WHITE TEXT
+N='\e[0m'                       # DEFAULT TEXT
+####### How to use: echo "${G}example${N}" #######
+##################################################
+name=$(getprop ro.product.model)
+notifss=("$@")
+icon_path="/sdcard/DCIM/Umbrella.ico" # Specify the icon path here
+##################################################
+if [[ $# -eq 0 ]] ; then
+    clear
+    #am start -a android.intent.action.MAIN -e message "Type: notif YOUR_NOTIFICATION" -n com.rja.utility/.ShowToast
+    clear
+    echo "${R}----------------------${N}"
+    echo " ${G}Insert notif name${W}...${N} "
+    echo "${R}----------------------${C}"
+    read 'notifname'
+    echo "${R}----------------------${N}"
+    echo " ${G}Insert notif text${W}...${N} "
+    echo "${R}----------------------${C}"
+    read 'notiftext'
+    echo "${N}"
+    su -lp 2000 -c "cmd notification post -S bigtext -t '$notifname' -i '/sdcard/DCIM/logo.ico' 'Umbrella' '$notiftext'";
+    clear
+    exit 1
+elif [[ $# -eq 1 ]] ; then
+    clear
+    su -lp 2000 -c "cmd notification post -S bigtext -t '$name' -i '/sdcard/DCIM/logo.ico' 'Umbrella' '$1'";
+    clear
+    exit 1
+elif [[ $# -gt 1 ]] ; then
+    clear
+    su -lp 2000 -c "cmd notification post -S bigtext -t '$name' -i '/sdcard/DCIM/logo.ico' 'Umbrella' '${notifss[*]}'";
+    clear
+    exit 1
+fi
+clear
+exit 1
