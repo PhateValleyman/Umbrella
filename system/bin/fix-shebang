@@ -1,10 +1,33 @@
 #!/system/bin/sh
 
-if [ $# = 0 -o "$1" = "-h" ]; then
-	echo 'usage: fix-shebang <files>'
-	echo 'Rewrite shebangs in specified files for running under root,'
-	echo 'which is done by rewriting #!*/bin/binary to #!/system/bin/binary.'
-	exit 1
+printError() {
+    local RED='\033[0;31m'
+    local NC='\033[0m'
+    echo -e "${RED}Error: $1${NC}"
+}
+
+printSuccess() {
+    local GREEN='\033[0;32m'
+    local NC='\033[0m'
+    echo -e "${GREEN}Success: $1${NC}"
+}
+
+printUsage() {
+    local YELLOW='\033[0;33m\u001B[4m'
+    local CYAN='\033[0;36m\u001B[1m'
+    local NC='\033[0m'
+    echo "Usage: fix-shebang <files>"
+    echo ""
+    echo "Rewrite shebangs in specified files from"
+    echo -e "${YELLOW}#!*/bin/${CYAN}binary${NC}"
+    echo "to"
+    echo -e "${YELLOW}#!/system/bin/${CYAN}binary${NC}"
+    echo ""
+}
+
+if [ "$#" = 0 ] || [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+    printUsage
+    exit 1
 fi
 
 for file in "$@"; do
